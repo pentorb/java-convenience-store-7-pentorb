@@ -13,12 +13,17 @@ public class DataParser {
     private static final int DATA_HEADER = 1;
     private static final String DELIMITER = ",";
     private static final String PATTERN_OF_DATE = "yyyy-MM-dd";
+    private static final String NO_DATA = "null";
+    private static final String EMPTY_PROMOTION = "";
 
     public static List<Product> parseProducts(List<String> rawData) {
         return rawData.stream()
                 .skip(DATA_HEADER)
                 .map(data -> {
                     String[] parts = data.split(DELIMITER);
+                    if(parts[3].equals(NO_DATA)){
+                        return new Product(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), EMPTY_PROMOTION);
+                    }
                     return new Product(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), parts[3]);
                 })
                 .collect(Collectors.toList());
