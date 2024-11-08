@@ -19,6 +19,7 @@ public class ConvenienceStoreController {
     public void run() {
         loadInventory();
         readOrder();
+        processOrders();
     }
 
     private void loadInventory() {
@@ -29,5 +30,9 @@ public class ConvenienceStoreController {
     private void readOrder() {
         String input = inputView.readItem();
         storeService.receiveOrder(input);
+    }
+
+    private void processOrders() {
+        storeService.buyProducts();
     }
 }

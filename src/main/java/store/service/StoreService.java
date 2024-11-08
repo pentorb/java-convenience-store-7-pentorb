@@ -54,6 +54,12 @@ public class StoreService {
         return new Order(parts[0], parts[1]);
     }
 
+    public void buyProducts() {
+        for (Order order : orders) {
+            store.buyProduct(order);
+        }
+    }
+
     public Store getStore() {
         return store;
     }

@@ -24,4 +24,20 @@ public class Product {
         }
         return String.format(STRING_FORMAT_OF_PRODUCT, name, price, quantity, promotion);
     }
+
+    public void decreaseQuantity(int number) {
+        quantity -= number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPromotion() {
+        return promotion;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
 }
