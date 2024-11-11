@@ -7,6 +7,8 @@ import store.view.OutputView;
 
 
 public class ConvenienceStoreController {
+    private static final String AGREEMENT_COMMAND = "Y";
+
     private final StoreService storeService;
     private final InputView inputView;
     private final OutputView outputView;
@@ -21,6 +23,7 @@ public class ConvenienceStoreController {
         loadInventory();
         readOrder();
         processOrders();
+        decideMembershipDiscount();
         showReceipt();
     }
 
@@ -34,9 +37,15 @@ public class ConvenienceStoreController {
         storeService.receiveOrder(input);
     }
 
+    private void decideMembershipDiscount() {
+        String command = inputView.readMembership();
+        if (command.equals(AGREEMENT_COMMAND)) {
+            storeService.applyMembershipDiscount();
+        }
+    }
+
     private void processOrders() {
         storeService.buyProducts();
-        storeService.applyMembershipDiscount();
     }
 
     private void showReceipt() {
