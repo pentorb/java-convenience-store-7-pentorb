@@ -18,6 +18,8 @@ public class StoreService {
     private List<Order> orders;
     private List<Gift> gifts;
     private Discount discount;
+    private List<SalesRecord> salesRecords;
+    private Receipt receipt;
 
     public StoreService() {
         this.store = openStore();
@@ -59,6 +61,7 @@ public class StoreService {
 
         for (Order order : orders) {
             store.buyProduct(order);
+            addSalesRecord(order);
             applyPromotionDiscount(order);
         }
     }
@@ -66,6 +69,16 @@ public class StoreService {
     private void initiateDiscount() {
         this.discount = new Discount();
         gifts = new ArrayList<>();
+        salesRecords = new ArrayList<>();
+    }
+
+    private void addSalesRecord(Order order) {
+        String targetName = order.getProductName();
+        int targetQuantity = order.getQuantity();
+        Product target = store.findProductByName(targetName);
+        int targetPrice = targetQuantity * target.getPrice();
+
+        salesRecords.add(new SalesRecord(targetName, targetQuantity, targetPrice));
     }
 
     private void applyPromotionDiscount(Order order) {
@@ -90,6 +103,17 @@ public class StoreService {
             }
         }
         discount.applyMembershipDiscount(validPrice);
+    }
+
+    public Receipt writeReceipt() {
+        receipt = new Receipt();
+        receipt.addRecords(salesRecords);
+        receipt.addGifts(gifts);
+        receipt.addDivider();
+        receipt.addTotal(salesRecords);
+        receipt.addDiscount(discount);
+        receipt.addNetPrice(discount);
+        return receipt;
     }
 
     public Store getStore() {

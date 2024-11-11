@@ -1,5 +1,6 @@
 package store.controller;
 
+import store.model.Receipt;
 import store.service.StoreService;
 import store.view.InputView;
 import store.view.OutputView;
@@ -20,6 +21,7 @@ public class ConvenienceStoreController {
         loadInventory();
         readOrder();
         processOrders();
+        showReceipt();
     }
 
     private void loadInventory() {
@@ -35,5 +37,9 @@ public class ConvenienceStoreController {
     private void processOrders() {
         storeService.buyProducts();
         storeService.applyMembershipDiscount();
+    }
+
+    private void showReceipt() {
+        outputView.printReceipt(storeService.writeReceipt());
     }
 }
