@@ -12,6 +12,7 @@ public class StoreService {
     private static final String SECOND_DELIMITER = "-";
     private static final String ESCAPED_BRACKETS_REGEX = "[\\[\\]]";
     private static final String REPLACED_STRING = "";
+    private static final String EMPTY_PROMOTION = "";
 
     private final Store store;
     private List<Order> orders;
@@ -77,6 +78,18 @@ public class StoreService {
         int giftCount = targetPromotion.gainGiftCount(order);
         discount.addPromotionDiscount(giftCount * targetProduct.getPrice());
         gifts.add(new Gift(targetProduct.getName(), giftCount));
+    }
+
+    public void applyMembershipDiscount() {
+        int validPrice = 0;
+
+        for (Order order : orders) {
+            Product targetProduct = store.findProductByName(order.getProductName());
+            if(targetProduct.getPromotion().equals(EMPTY_PROMOTION)){
+                validPrice += targetProduct.getPrice();
+            }
+        }
+        discount.applyMembershipDiscount(validPrice);
     }
 
     public Store getStore() {

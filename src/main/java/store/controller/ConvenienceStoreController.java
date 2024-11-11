@@ -34,5 +34,6 @@ public class ConvenienceStoreController {
 
     private void processOrders() {
         storeService.buyProducts();
+        storeService.applyMembershipDiscount();
     }
 }
