@@ -70,6 +70,9 @@ public class StoreService {
     private void applyPromotionDiscount(Order order) {
         Product targetProduct = store.findProductByName(order.getProductName());
         Promotion targetPromotion = store.findPromotionByName(order.getProductName());
+        if(targetPromotion == null) {
+            return;
+        }
 
         int giftCount = targetPromotion.gainGiftCount(order);
         discount.addPromotionDiscount(giftCount * targetProduct.getPrice());
