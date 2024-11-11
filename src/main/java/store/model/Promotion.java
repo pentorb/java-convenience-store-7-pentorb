@@ -14,4 +14,11 @@ public class Promotion {
     public String getName() {
         return name;
     }
+
+    public int gainGiftCount(Order order) {
+        if(order.getQuantity() >= buyCount && order.getQuantity() % buyCount == 0) {
+            return (order.getQuantity() / (buyCount + getCount)) * getCount;
+        }
+        return 0;
+    }
 }

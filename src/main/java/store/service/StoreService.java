@@ -1,9 +1,6 @@
 package store.service;
 
-import store.model.Order;
-import store.model.Product;
-import store.model.Promotion;
-import store.model.Store;
+import store.model.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +15,8 @@ public class StoreService {
 
     private final Store store;
     private List<Order> orders;
+    private List<Gift> gifts;
+    private Discount discount;
 
     public StoreService() {
         this.store = openStore();
@@ -55,9 +54,26 @@ public class StoreService {
     }
 
     public void buyProducts() {
+        initiateDiscount();
+
         for (Order order : orders) {
             store.buyProduct(order);
+            applyPromotionDiscount(order);
         }
+    }
+
+    private void initiateDiscount() {
+        this.discount = new Discount();
+        gifts = new ArrayList<>();
+    }
+
+    private void applyPromotionDiscount(Order order) {
+        Product targetProduct = store.findProductByName(order.getProductName());
+        Promotion targetPromotion = store.findPromotionByName(order.getProductName());
+
+        int giftCount = targetPromotion.gainGiftCount(order);
+        discount.addPromotionDiscount(giftCount * targetProduct.getPrice());
+        gifts.add(new Gift(targetProduct.getName(), giftCount));
     }
 
     public Store getStore() {

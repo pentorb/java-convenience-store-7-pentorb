@@ -35,6 +35,15 @@ public class Store {
         return null;
     }
 
+    public Promotion findPromotionByName(String name) {
+        for (Promotion promotion : promotions) {
+            if (promotion.getName().equals(name)) {
+                return promotion;
+            }
+        }
+        return null;
+    }
+
     public void buyProduct(Order order) {
         Product targetProduct = findProductByName(order.getProductName());
         targetProduct.decreaseQuantity(order.getQuantity());
